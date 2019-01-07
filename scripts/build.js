@@ -47,9 +47,12 @@ if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
 // Process CLI arguments
 const argv = process.argv.slice(2);
 const writeStatsJson = argv.indexOf('--stats') !== -1;
+// const isDevMode = argv.indexOf('--dev') !== -1;
 
 // Generate configuration
-const config = configFactory('production');
+// const config = configFactory('production', isDevMode ? 'development' : 'production');
+const configDev = configFactory('production', 'development');
+const config = configFactory('production', 'production');
 
 // We require that you explicitly set browsers and do not fall back to
 // browserslist defaults.
@@ -65,7 +68,7 @@ checkBrowsers(paths.appPath, isInteractive)
     // if you're in it, you don't end up in Trash
     fs.emptyDirSync(paths.appBuild);
     // Merge with the public folder
-    copyPublicFolder();
+    // copyPublicFolder();
     // Start the webpack build
     return build(previousFileSizes);
   })
@@ -127,7 +130,7 @@ checkBrowsers(paths.appPath, isInteractive)
 function build(previousFileSizes) {
   console.log('Creating an optimized production build...');
 
-  let compiler = webpack(config);
+  let compiler = webpack([config, configDev]);
   return new Promise((resolve, reject) => {
     compiler.run((err, stats) => {
       let messages;
@@ -184,9 +187,11 @@ function build(previousFileSizes) {
   });
 }
 
+const filesToAvoid = [paths.appHtml, path.join(paths.appPublic, 'favicon.ico'), path.join(paths.appPublic, 'manifest.json')];
+
 function copyPublicFolder() {
   fs.copySync(paths.appPublic, paths.appBuild, {
     dereference: true,
-    filter: file => file !== paths.appHtml,
+    filter: file => !filesToAvoid.includes(file),
   });
 }
