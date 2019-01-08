@@ -14,7 +14,6 @@ process.on('unhandledRejection', err => {
 // Ensure environment variables are read.
 require('../config/env');
 
-
 const path = require('path');
 const chalk = require('chalk');
 const fs = require('fs-extra');
@@ -68,7 +67,7 @@ checkBrowsers(paths.appPath, isInteractive)
     // if you're in it, you don't end up in Trash
     fs.emptyDirSync(paths.appBuild);
     // Merge with the public folder
-    // copyPublicFolder();
+    copyPublicFolder();
     // Start the webpack build
     return build(previousFileSizes);
   })
@@ -187,7 +186,11 @@ function build(previousFileSizes) {
   });
 }
 
-const filesToAvoid = [paths.appHtml, path.join(paths.appPublic, 'favicon.ico'), path.join(paths.appPublic, 'manifest.json')];
+const filesToAvoid = [
+  paths.appHtml,
+  path.join(paths.appPublic, 'favicon.ico'),
+  path.join(paths.appPublic, 'manifest.json'),
+];
 
 function copyPublicFolder() {
   fs.copySync(paths.appPublic, paths.appBuild, {

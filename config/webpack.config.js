@@ -254,8 +254,9 @@ module.exports = function(webpackEnv, buildingMode) {
         // Support React Native Web
         // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
         'react-native': 'react-native-web',
-        react: path.resolve(__dirname, './node_modules/react'),
-        'react-dom': path.resolve(__dirname, './node_modules/react-dom'),
+        react: path.resolve(paths.appPath, './node_modules/react'),
+        'react-dom': path.resolve(paths.appPath, './node_modules/react-dom'),
+        'assets': path.resolve(paths.appSrc, 'lib', 'assets')
       },
       plugins: [
         // Adds support for installing with Plug'n'Play, leading to faster installs and adding
@@ -323,11 +324,12 @@ module.exports = function(webpackEnv, buildingMode) {
             // smaller than specified limit in bytes as data URLs to avoid requests.
             // A missing `test` is equivalent to a match.
             {
-              test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
+              test: [/\.bmp$/, /\.gif$/, /\.svg$/, /\.jpe?g$/, /\.png$/],
               loader: require.resolve('url-loader'),
               options: {
-                limit: 10000,
+                limit: 10, // 10000,
                 name: 'assets/[name].[hash:8].[ext]',
+                publicPath: paths.publicUrl
               },
             },
             // Process application JS with Babel.

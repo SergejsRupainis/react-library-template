@@ -1,9 +1,8 @@
-
+import paketinOhjaus from 'assets/icons/icon_orange_paketin_ohjaus.svg';
 import Button from './components/Button/Button';
-import paketinOhjaus from './assets/icons/icon_orange_paketin_ohjaus.svg';
 
 export default {
-    DemoMessage: 'Demo messages',
-    paketinOhjaus,
-    Button
+  DemoMessage: 'Demo messages',
+  paketinOhjaus,
+  Button,
 };
