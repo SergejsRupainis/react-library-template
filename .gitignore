@@ -10,7 +10,7 @@
 
 # production
 /build
-/styleguide
+/documentation
 
 # misc
 .DS_Store
