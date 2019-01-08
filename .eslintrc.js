@@ -25,7 +25,7 @@ module.exports = {
   // https://github.com/AtomLinter/linter-eslint/issues/610
   settings: {
     'import/resolver': {
-      node: { paths: ['src', 'src/lib'] },
+      node: { paths: ['src'] },
     },
   },
 };

@@ -21,8 +21,10 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin-alt')
 const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
 const appPackageJson = require(paths.appPackageJson);
 
-function snakeToCamel(s){
-  return s.replace(/(\-\w)/g, function(m){return m[1].toUpperCase();});
+function snakeToCamel(s) {
+  return s.replace(/(\-\w)/g, function(m) {
+    return m[1].toUpperCase();
+  });
 }
 
 const libraryName = appPackageJson.name;
@@ -42,7 +44,7 @@ const sassModuleRegex = /\.module\.(scss|sass)$/;
 
 // This is the production and development configuration.
 // It is focused on developer experience, fast rebuilds, and a minimal bundle.
-module.exports = function(webpackEnv, buildingMode) {
+module.exports = function createWebpackConfiguration(webpackEnv, buildingMode) {
   const isEnvDevelopment = webpackEnv === 'development';
   const isEnvProduction = webpackEnv === 'production';
 
@@ -153,7 +155,7 @@ module.exports = function(webpackEnv, buildingMode) {
       // There will be one main bundle, and one file per asynchronous chunk.
       // In development, it does not produce real files.
       filename: `${libraryCamelCaseName}${isDevBuild ? '.dev' : ''}.js`,
-      library: libraryName,
+      library: libraryCamelCaseName,
       libraryTarget: 'umd',
       umdNamedDefine: true,
       // We inferred the "public path" (such as / or /my-project) from homepage.
@@ -256,7 +258,7 @@ module.exports = function(webpackEnv, buildingMode) {
         'react-native': 'react-native-web',
         react: path.resolve(paths.appPath, './node_modules/react'),
         'react-dom': path.resolve(paths.appPath, './node_modules/react-dom'),
-        'assets': path.resolve(paths.appSrc, 'lib', 'assets')
+        assets: path.resolve(paths.appSrc, 'assets'),
       },
       plugins: [
         // Adds support for installing with Plug'n'Play, leading to faster installs and adding
@@ -308,7 +310,6 @@ module.exports = function(webpackEnv, buildingMode) {
               options: {
                 formatter: require.resolve('react-dev-utils/eslintFormatter'),
                 eslintPath: require.resolve('eslint'),
-                
               },
               loader: require.resolve('eslint-loader'),
             },
@@ -329,7 +330,7 @@ module.exports = function(webpackEnv, buildingMode) {
               options: {
                 limit: 10, // 10000,
                 name: 'assets/[name].[hash:8].[ext]',
-                publicPath: paths.publicUrl
+                publicPath: paths.publicUrl,
               },
             },
             // Process application JS with Babel.
@@ -342,7 +343,7 @@ module.exports = function(webpackEnv, buildingMode) {
                 customize: require.resolve(
                   'babel-preset-react-app/webpack-overrides'
                 ),
-                
+
                 plugins: [
                   [
                     require.resolve('babel-plugin-named-asset-import'),
@@ -382,7 +383,7 @@ module.exports = function(webpackEnv, buildingMode) {
                 ],
                 cacheDirectory: true,
                 cacheCompression: isEnvProduction,
-                
+
                 // If an error happens in a package, it's possible to be
                 // because it was compiled. Thus, we don't want the browser
                 // debugger to show the original code. Instead, the code
